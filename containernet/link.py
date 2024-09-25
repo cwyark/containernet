@@ -61,27 +61,27 @@ class Intf( object ):
 
     def ifconfig( self, *args ):
         "Configure ourselves using ifconfig"
-        return self.cmd( 'ifconfig', self.name, *args )
+        return self.cmd( 'sudo', 'ifconfig', self.name, *args )
 
     def setIP( self, ipstr, prefixLen=None, overwrite=True ):
-        """Set our IP address"""
+        """Set our IP /ddress"""
         # This is a sign that we should perhaps rethink our prefix
         # mechanism and/or the way we specify IP addresses
 
         # remove all old adresses (to remove side effects)
         # this is needed after the swtich from "ifconfig" to "ip"
         if overwrite:
-            self.cmd("ip", "address", "flush", "dev", self.name)
+            self.cmd('sudo', "ip", "address", "flush", "dev", self.name)
         # add the new address
         if '/' in ipstr:
             self.ip, self.prefixLen = ipstr.split( '/' )
-            return self.cmd('ip', 'address', 'add', ipstr, 'dev', self.name)
+            return self.cmd('sudo', 'ip', 'address', 'add', ipstr, 'dev', self.name)
         else:
             if prefixLen is None:
                 raise Exception( 'No prefix length set for IP address %s'
                                  % ( ipstr, ) )
             self.ip, self.prefixLen = ipstr, prefixLen
-            return self.cmd('ip', 'address', 'add', '%s/%s' % (ipstr, prefixLen), 'dev', self.name)
+            return self.cmd('sudo', 'ip', 'address', 'add', '%s/%s' % (ipstr, prefixLen), 'dev', self.name)
 
     def setMAC( self, macstr ):
         """Set the MAC address for an interface.
