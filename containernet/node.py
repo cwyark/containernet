@@ -133,7 +133,7 @@ class Docker ( Host ):
                      'devices': [],
                      'cap_add': ['net_admin'],  # we need this to allow mininet network setup
                      #'storage_opt': None,
-                     'sysctls': {}
+                     'sysctls': {},
                      'extra_hosts': {},
                      }
         defaults.update( kwargs )
